@@ -31,7 +31,7 @@ all-%:
 	@${MAKE} check-deps-$*
 	@${MAKE} package-$*
 	@${MAKE} deploy-$*
-	@${MAKE} tests-integ-$*
+# 	@${MAKE} tests-integ-$*
 
 # Run CI on services
 ci: $(foreach service,${SERVICES}, ci-${service})

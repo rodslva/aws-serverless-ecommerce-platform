@@ -5,6 +5,7 @@ permissions:
   - service: orders
     api:
       /validate: [post]
+      /create: [post]
 parameters:
   EventBusArn: /ecommerce/{Environment}/platform/event-bus/arn
   EventBusName: /ecommerce/{Environment}/platform/event-bus/name

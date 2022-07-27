@@ -80,26 +80,69 @@ Resources:
   #############
   # FUNCTIONS #
   #############
-  ValidateFunction:
+#  ValidateFunction:
+#    Type: AWS::Serverless::Function
+#    Properties:
+#      CodeUri: src/validate/
+#      Events:
+#        BackendApi:
+#          Type: Api
+#          Properties:
+#            Path: /backend/validate
+#            Method: POST
+#            RestApiId: !Ref Api
+#      Policies:
+#        - arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy
+#        - DynamoDBReadPolicy:
+#            TableName: !Ref Table
+  CreateFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: src/validate/
+      CodeUri: src/create/
       Events:
         BackendApi:
           Type: Api
           Properties:
-            Path: /backend/validate
+            Path: /backend/create
             Method: POST
+            RestApiId: !Ref Api
+      Policies:
+        - arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy
+        - DynamoDBCrudPolicy:
+            TableName: !Ref Table
+
+  GetFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/get/
+      Events:
+        BackendApi:
+          Type: Api
+          Properties:
+            Path: /backend/get/{productId}
+            Method: GET
             RestApiId: !Ref Api
       Policies:
         - arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy
         - DynamoDBReadPolicy:
             TableName: !Ref Table
 
-  ValidateLogGroup:
+#  ValidateLogGroup:
+#    Type: AWS::Logs::LogGroup
+#    Properties:
+#      LogGroupName: !Sub "/aws/lambda/${ValidateFunction}"
+#      RetentionInDays: !Ref RetentionInDays
+
+  CreateLogGroup:
     Type: AWS::Logs::LogGroup
     Properties:
-      LogGroupName: !Sub "/aws/lambda/${ValidateFunction}"
+      LogGroupName: !Sub "/aws/lambda/${CreateFunction}"
+      RetentionInDays: !Ref RetentionInDays
+
+  GetLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub "/aws/lambda/${GetFunction}"
       RetentionInDays: !Ref RetentionInDays
 
   TableUpdateFunction:
